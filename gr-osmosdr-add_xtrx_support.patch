@@ -1,0 +1,31 @@
+Index: buildroot/package/gr-osmosdr/Config.in
+===================================================================
+--- buildroot.orig/package/gr-osmosdr/Config.in
++++ buildroot/package/gr-osmosdr/Config.in
+@@ -43,4 +43,10 @@
+ 	help
+ 	  Enable RFSPACE Receivers support
+ 
++config BR2_PACKAGE_GR_OSMOSDR_XTRX
++	bool "XTRX Receivers support"
++	depends on BR2_PACKAGE_LIBXTRX
++	help
++	  Enable XTRX Receivers support
++
+ endif
+Index: buildroot/package/gr-osmosdr/gr-osmosdr.mk
+===================================================================
+--- buildroot.orig/package/gr-osmosdr/gr-osmosdr.mk
++++ buildroot/package/gr-osmosdr/gr-osmosdr.mk
+@@ -54,4 +54,11 @@
+ GR_OSMOSDR_CONF_OPTS += -DENABLE_RFSPACE=OFF
+ endif
+ 
++ifeq ($(BR2_PACKAGE_GR_OSMOSDR_XTRX),y)
++GR_OSMOSDR_CONF_OPTS += -DENABLE_XTRX=ON
++GR_OSMOSDR_DEPENDENCIES += libxtrx
++else
++GR_OSMOSDR_CONF_OPTS += -DENABLE_XTRX=OFF
++endif
++
+ $(eval $(cmake-package))

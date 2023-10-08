@@ -50,3 +50,13 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+*.o
+build/
+.vscode/
+*.log
+aesdsocket
+venv/
+env/
+
+*.swp

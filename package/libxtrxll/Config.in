@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBXTRXLL
+	bool "libxtrxll"
+	select BR2_LINUX_KERNEL_EXT_XTRX_LINUX_PCIE_DRV
+	help
+	  Low level XTRX hardware abstraction library
+
+	  https://github.com/xtrx-sdr/libxtrxll

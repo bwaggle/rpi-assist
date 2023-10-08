@@ -1,0 +1,72 @@
+comment "gnss-sdr needs a toolchain w/ C++, fortran, NPTL, wchar, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIBS
+comment "gnss-sdr needs python3, gnuradio and armadillo"
+	depends on !(BR2_PACKAGE_PYTHON3 && BR2_PACKAGE_GNURADIO && BR2_PACKAGE_ARMADILLO)
+
+config BR2_PACKAGE_GNSS_SDR
+	bool "gnss-sdr"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on BR2_TOOLCHAIN_USES_GLIBC # clapack
+	depends on BR2_USE_WCHAR # gnutls
+	depends on BR2_PACKAGE_ARMADILLO
+	depends on BR2_PACKAGE_GNURADIO || BR2_PACKAGE_GNURADIO310
+	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS # protobuf
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_BOOST_FILESYSTEM
+	select BR2_PACKAGE_BOOST_SERIALIZATION
+	select BR2_PACKAGE_GFLAGS
+	select BR2_PACKAGE_GLOG
+	select BR2_PACKAGE_GNURADIO_ANALOG
+	select BR2_PACKAGE_GNURADIO_BLOCKS
+	select BR2_PACKAGE_GNURADIO_FFT
+	select BR2_PACKAGE_GNURADIO_FILTER
+	select BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_GNUTLS_OPENSSL
+	select BR2_PACKAGE_LAPACK
+	select BR2_PACKAGE_LOG4CPP
+	select BR2_PACKAGE_MATIO
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_PROTOBUF
+	select BR2_PACKAGE_PUGIXML
+
+	help
+	  GNU Radio block for interfacing with various radio hardware
+
+	  http://osmocom.org/projects/osmosdr
+
+if BR2_PACKAGE_GNSS_SDR
+
+config BR2_PACKAGE_GNSS_SDR_AD9361
+	bool "enable AD9361 support"
+	select BR2_PACKAGE_LIBIIO_PLUTO
+	help
+	  Enable the use of AD9361
+
+config BR2_PACKAGE_GNSS_SDR_OSMOSDR
+	bool "enable osmosdr support"
+	select BR2_PACKAGE_GR_OSMOSDR
+	help
+	  Enable the use of OsmoSDR
+
+comment "UHD support for gnss-sdr needs gnuradio with uhd"
+	depends on !BR2_PACKAGE_GNURADIO_UHD
+
+config BR2_PACKAGE_GNSS_SDR_UHD
+	bool "enable UHD support"
+	depends on BR2_PACKAGE_GNURADIO_UHD
+	help
+	  Enable the use of UHD
+
+comment "PlutoSDR support for gnss-sdr needs gr-iio"
+	depends on !BR2_PACKAGE_GR_IIO
+
+config BR2_PACKAGE_GNSS_SDR_PLUTOSDR
+	bool "enable PlutoSDR support"
+	depends on BR2_PACKAGE_GR_IIO
+	help
+	  Enable the use of PlutoSDR
+endif
